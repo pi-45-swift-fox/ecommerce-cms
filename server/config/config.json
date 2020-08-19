@@ -9,7 +9,7 @@
   "test": {
     "username": "postgres",
     "password": "postgres",
-    "database": "cms-db-2",
+    "database": "cms-db-test",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },

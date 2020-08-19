@@ -1,19 +1,16 @@
 const request = require('supertest')
+const app = require('../app')
+const { encode } = require('../helpers/jwt')
+const { User, Product, sequelize } = require('../models')
+const { queryInterface } = sequelize
 
 let access_token = ''
-let error_token = ''
 let globalId = null
 
 const inputAdmin = {
     email: 'admin@mail.com',
     password: '12345',
     role: 'admin'
-}
-
-const inputUser = {
-    email: 'user@mail.com',
-    password: '12345',
-    role: 'user'
 }
 
 beforeAll((done) => {
@@ -60,7 +57,8 @@ const testProduct = {
     name: 'Macbook',
     image_url: 'https://zdnet2.cbsistatic.com/hub/i/2018/08/23/ee30e744-889f-4df4-86db-cdac30453d08/apple-mbp-15-header.jpg',
     price: 24000000,
-    stock: 5
+    stock: 5,
+    category: 'Notebook'
 }
 
 describe('POST /products', () => {
@@ -79,6 +77,7 @@ describe('POST /products', () => {
             expect(body).toHaveProperty('image_url', testProduct.image_url)
             expect(body).toHaveProperty('price', testProduct.price)
             expect(body).toHaveProperty('stock', testProduct.stock)
+            expect(body).toHaveProperty('category', testProduct.category)
             globalId = body.id
             done();
         })
@@ -93,7 +92,8 @@ describe('POST /products', () => {
             name: '',
             image_url: 'https://zdnet2.cbsistatic.com/hub/i/2018/08/23/ee30e744-889f-4df4-86db-cdac30453d08/apple-mbp-15-header.jpg',
             price: 23000000,
-            stock: 3
+            stock: 3,
+            category: 'Notebook'
         }
         return request(app)
         .post('/products')
@@ -116,7 +116,8 @@ describe('POST /products', () => {
             name: 'Macbook',
             image_url: 'MacbokUrl',
             price: 23000000,
-            stock: 3
+            stock: 3,
+            category: 'Notebook'
         }
         return request(app)
         .post('/products')
@@ -139,7 +140,8 @@ describe('POST /products', () => {
             name: 'Macbook',
             image_url: 'https://zdnet2.cbsistatic.com/hub/i/2018/08/23/ee30e744-889f-4df4-86db-cdac30453d08/apple-mbp-15-header.jpg',
             price: -1,
-            stock: 3
+            stock: 3,
+            category: 'Notebook'
         }
         return request(app)
         .post('/products')
@@ -162,7 +164,8 @@ describe('POST /products', () => {
             name: 'Macbook',
             image_url: 'https://zdnet2.cbsistatic.com/hub/i/2018/08/23/ee30e744-889f-4df4-86db-cdac30453d08/apple-mbp-15-header.jpg',
             price: 23000000,
-            stock: -3
+            stock: -3,
+            category: 'Notebook'
         }
         return request(app)
         .post('/products')
@@ -245,7 +248,8 @@ const testEditProduct = {
     name: 'Macbook edit',
     image_url: 'https://i.imgur.com/Bcz59cD.png',
     price: 23000000,
-    stock: 8
+    stock: 8,
+    category: 'Notebook'
 }
 
 describe('PUT/products/:id', () => {
@@ -263,6 +267,7 @@ describe('PUT/products/:id', () => {
             expect(body).toHaveProperty('image_url', testEditProduct.image_url)
             expect(body).toHaveProperty('price', testEditProduct.price)
             expect(body).toHaveProperty('stock', testEditProduct.stock)
+            expect(body).toHaveProperty('category', testEditProduct.category)
             done();
         })
         .catch(err => {
@@ -293,7 +298,8 @@ describe('PUT/products/:id', () => {
             name: '',
             image_url: 'https://i.imgur.com/Bcz59cD.png',
             price: 23000000,
-            stock: 8
+            stock: 8,
+            category: 'Notebook'
         }
         return request(app)
             .put(`/products/${globalId}`)
@@ -316,7 +322,8 @@ describe('PUT/products/:id', () => {
             name: 'Macbook',
             image_url: 'MacbokUrl',
             price: 23000000,
-            stock: 3
+            stock: 3,
+            category: 'Notebook'
         }
         return request(app)
             .put(`/products/${globalId}`)
@@ -339,7 +346,8 @@ describe('PUT/products/:id', () => {
             name: 'Macbook',
             image_url: 'https://zdnet2.cbsistatic.com/hub/i/2018/08/23/ee30e744-889f-4df4-86db-cdac30453d08/apple-mbp-15-header.jpg',
             price: -1,
-            stock: 3
+            stock: 3,
+            category: 'Notebook'
         }
         return request(app)
             .put(`/products/${globalId}`)
@@ -362,7 +370,8 @@ describe('PUT/products/:id', () => {
             name: 'Macbook',
             image_url: 'https://zdnet2.cbsistatic.com/hub/i/2018/08/23/ee30e744-889f-4df4-86db-cdac30453d08/apple-mbp-15-header.jpg',
             price: 23000000,
-            stock: -3
+            stock: -3,
+            category: 'Notebook'
         }
         return request(app)
             .put(`/products/${globalId}`)
@@ -406,7 +415,8 @@ describe('DELETE/products/id', () => {
             name: 'Macbook edit',
             image_url: 'https://zdnet2.cbsistatic.com/hub/i/2018/08/23/ee30e744-889f-4df4-86db-cdac30453d08/apple-mbp-15-header.jpg',
             price: 23000000,
-            stock: 3
+            stock: 3,
+            category: 'Notebook'
         }
         return request(app)
             .delete(`/products/16`)
