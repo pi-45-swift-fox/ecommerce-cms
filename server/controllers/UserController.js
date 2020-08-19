@@ -1,4 +1,3 @@
-require('dotenv').config()
 const { User } = require('../models')
 const { encode } = require('../helpers/jwt')
 const { checkPassword } = require('../helpers/bcrypt')
