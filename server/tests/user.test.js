@@ -1,4 +1,8 @@
 const request = require('supertest')
+const app = require('../app')
+const { encode } = require('../helpers/jwt')
+const { User, sequelize } = require('../models')
+const { queryInterface } = sequelize
 
 beforeAll ((done) => {
     let input = {
