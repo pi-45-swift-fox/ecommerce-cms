@@ -140,7 +140,20 @@ export default new Vuex.Store({
           dispatch('fetchProducts')
         })
         .catch(error => {
-          console.log(error)
+          if (error.response) {
+            if (error.response.status === 403) {
+              swal.fire('Unauthorized', 'You need to login as admin first', 'info')
+            } else if (error.response.status === 400) {
+              Toast.fire({
+                icon: 'error',
+                title: error.response.data.msg
+              })
+            }
+          } else if (error.request) {
+            console.log(error.request)
+          } else {
+            console.log('Error', error.message)
+          }
         })
     },
     deleteProduct ({ dispatch }, id) {
@@ -152,10 +165,22 @@ export default new Vuex.Store({
         }
       })
         .then(response => {
+          Toast.fire({
+            icon: 'success',
+            title: 'Successfully deleted the product!'
+          })
           dispatch('fetchProducts')
         })
         .catch(error => {
-          console.log(error)
+          if (error.response.status === 403) {
+            swal.fire('Unauthorized', 'You need to login as admin first', 'info')
+          } else {
+            Toast.fire({
+              icon: 'warning',
+              title: 'Whoops, something went wrong! Check console and contact the developer'
+            })
+            console.log(error)
+          }
         })
     },
     fetchProducts ({ commit }) {
@@ -166,6 +191,10 @@ export default new Vuex.Store({
           commit('set_products', data)
         })
         .catch(error => {
+          Toast.fire({
+            icon: 'warning',
+            title: 'Whoops, something went wrong! Check console and contact the developer'
+          })
           console.log(error)
         })
     },
@@ -177,6 +206,10 @@ export default new Vuex.Store({
           commit('set_edit_product', data)
         })
         .catch(error => {
+          Toast.fire({
+            icon: 'warning',
+            title: 'Whoops, something went wrong! Check console and contact the developer'
+          })
           console.log(error)
         })
     }
