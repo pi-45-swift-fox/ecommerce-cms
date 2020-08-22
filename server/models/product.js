@@ -74,7 +74,22 @@ module.exports = (sequelize, DataTypes) => {
             throw new Error("price or stock must not be less than 0")
         }
       }
-    }
+    },
+    tags: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          args: true,
+          msg: "tags must not be empty"
+        },
+        notEmpty: {
+          args: true,
+          msg: "tags must not be empty"
+        }
+      }
+    },
+    description: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Product',

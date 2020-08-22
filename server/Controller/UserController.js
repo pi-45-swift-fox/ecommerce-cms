@@ -13,7 +13,7 @@ class UserController {
         if (bcrypt.compareSync(req.body.password, data.password))
         {
           const token = jwt.sign({id: data.id, email: data.email, role: data.role}, process.env.JWT_SECRET)
-          return res.status(200).json({access_token: token});
+          return res.status(200).json({access_token: token, email: data.email});
         }
         else
           return res.status(401).json({ message: "username or password is wrong"});

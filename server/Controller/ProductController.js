@@ -10,13 +10,26 @@ class ProductController {
       .catch(err => res.status(500).json(err));
   }
 
+  static viewOne(req, res, next)
+  {
+    Product.findOne({where: {id: +req.params.id}})
+      .then(data => {
+        if (data)
+          return res.status(200).json(data);
+        return res.status(404).json({message: 'product not found'})
+      })
+      .catch(err => res.status(500).json(err));
+  }
+
   static post(req, res, next)
   {
     const newProduct = {
       name: req.body.name,
       image_url: req.body.image_url,
       price: req.body.price,
-      stock: req.body.stock
+      stock: req.body.stock,
+      tags: req.body.tags,
+      description: req.body.description
     }
 
     Product.create(newProduct)
@@ -36,7 +49,9 @@ class ProductController {
       name: req.body.name,
       image_url: req.body.image_url,
       price: req.body.price,
-      stock: req.body.stock
+      stock: req.body.stock,
+      tags: req.body.tags,
+      description: req.body.description
     }
 
     Product.update(newProduct, {where: {id: +req.params.id}, returning: true})

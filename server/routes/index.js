@@ -8,6 +8,7 @@ router.post('/login', UserController.login);
 
 router.use(authentication);
 router.get('/products', ProductController.view);
+router.get('/products/:id', ProductController.viewOne);
 router.post('/products', authorization, ProductController.post);
 router.put('/products/:id', authorization, ProductController.update);
 router.delete('/products/:id', authorization, ProductController.delete);

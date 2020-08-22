@@ -35,9 +35,6 @@
 </template>
 
 <script type="text/javascript">
-import axios from 'axios'
-import router from '@/router'
-
 export default {
   name: 'Login',
   data () {
@@ -51,19 +48,7 @@ export default {
   methods: {
     onSubmit (evt) {
       evt.preventDefault()
-
-      axios({
-        method: 'post',
-        url: 'http://localhost:3000/login',
-        data: this.form
-      }).then(function ({ data }) {
-        localStorage.access_token = data.access_token
-        router.push({ name: 'Products' })
-        console.log(data)
-      })
-        .catch(err => console.log(err))
-
-      console.log(this.form)
+      this.$store.dispatch('login', this.form)
     },
     onReset (evt) {
       evt.preventDefault()

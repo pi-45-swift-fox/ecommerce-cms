@@ -11,6 +11,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
+app.get('/', (req, res) => {
+  res.send('testing');
+})
+
 app.use(route)
 
 if (process.env.NODE_ENV != 'test')

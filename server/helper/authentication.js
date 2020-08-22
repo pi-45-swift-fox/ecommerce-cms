@@ -7,6 +7,7 @@ module.exports = (req, res, next) => {
 
   try
   {
+    console.log(req.headers.access_token);
     const userData = jwt.verify(req.headers.access_token, process.env.JWT_SECRET);
     User.findOne({where: {email: userData.email}})
       .then(data => {
