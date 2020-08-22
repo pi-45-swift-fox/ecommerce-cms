@@ -17,7 +17,9 @@
     "supertest": "^4.0.2"
   },
   "scripts": {
-    "test": "jest --detectOpenHandles --runInBand --forceExit --watchAll"
+    "test": "jest --detectOpenHandles --runInBand --forceExit --watchAll",
+    "dev": "NODE_ENV=development node app.js",
+    "start": "node app.js"
   },
   "author": "",
   "license": "ISC"
