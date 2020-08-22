@@ -60,6 +60,7 @@ export default {
 
 .login{
 position: fixed;
+background-image: url("https://wallpaperaccess.com/full/109392.jpg");
 background-size: cover;
 height: 100%;
 width: 100%;
