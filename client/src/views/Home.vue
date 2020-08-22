@@ -55,10 +55,10 @@ export default {
 
 <style scoped>
 .home{
-  width: 130%;
+  width: 100%;
   background-image: url("https://i.pinimg.com/originals/d5/b0/1e/d5b01e59674b1dfc9ed4a59427ee13e7.jpg");
   background-size: cover;
-  height: 100%;
+  height: 140%;
 }
 #content {
   width: 90%;
