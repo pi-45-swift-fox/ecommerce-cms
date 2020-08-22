@@ -48,7 +48,7 @@ export default new Vuex.Store({
       context.commit('SET_OPENEDIT', true);
       return axios({
         method: 'GET',
-        url: `http://localhost:3000/products/${payload}`,
+        url: `https://protected-thicket-03126.herokuapp.com/products/${payload}`,
         headers: {
           access_token: localStorage.access_token,
         }
@@ -70,7 +70,7 @@ export default new Vuex.Store({
     login(context, payload) {
       return axios({
         method: 'POST',
-        url: 'http://localhost:3000/login',
+        url: 'https://protected-thicket-03126.herokuapp.com/login',
         data: {
           email: payload.email,
           password: payload.password,
@@ -84,7 +84,7 @@ export default new Vuex.Store({
     getProducts(context) {
       return axios({
         method: 'GET',
-        url: 'http://localhost:3000/products',
+        url: 'https://protected-thicket-03126.herokuapp.com/products',
         headers: {
           access_token: localStorage.access_token,
         },
@@ -100,7 +100,7 @@ export default new Vuex.Store({
       console.log(payload.stock);
       return axios({
         method: 'PUT',
-        url: `http://localhost:3000/products/${payload.id}`,
+        url: `https://protected-thicket-03126.herokuapp.com/products/${payload.id}`,
         headers: {
           access_token: localStorage.access_token,
         },
@@ -121,7 +121,7 @@ export default new Vuex.Store({
     edit(context, payload) {
       return axios({
         method: 'PUT',
-        url: `http://localhost:3000/products/${payload.id}`,
+        url: `https://protected-thicket-03126.herokuapp.com/products/${payload.id}`,
         headers: {
           access_token: localStorage.access_token,
         },
@@ -145,7 +145,7 @@ export default new Vuex.Store({
     addProduct(context, payload) {
       return axios({
         method: 'POST',
-        url: 'http://localhost:3000/products',
+        url: 'https://protected-thicket-03126.herokuapp.com/products',
         headers: {
           access_token: localStorage.access_token,
         },
@@ -172,7 +172,7 @@ export default new Vuex.Store({
     deleteProduct(context, payload) {
       return axios({
         method: 'DELETE',
-        url: `http://localhost:3000/products/${payload}`,
+        url: `https://protected-thicket-03126.herokuapp.com/products/${payload}`,
         headers: {
           access_token: localStorage.access_token,
         },
