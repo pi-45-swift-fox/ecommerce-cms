@@ -26,8 +26,23 @@ class ProductController {
         }
     }
 
+    static async getSelectedProduct(req,res,next) {
+        try {
+            const product = await Product.findOne({
+                where: {
+                    id: req.params.id
+                }
+            })
+            if(product) {
+                res.status(200).json({product})
+            }
+        } catch (err) {
+            next(err)
+        }
+    }
+
     static async updateProduct(req,res,next) {
-        
+
         try{
             const id = req.params.id
             const { name,image_url,price,stock } = req.body
@@ -44,7 +59,7 @@ class ProductController {
             })
             if(updated) {
                 res.status(200).json({message:['Successfully update']})
-            } 
+            }
         } catch(err) {
             next(err)
         }
