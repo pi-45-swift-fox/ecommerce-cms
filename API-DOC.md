@@ -16,6 +16,7 @@ ecommerce-cms is an application to management content ecommerce. This app has :
 ### POST /login
 ### POST /products
 ### GET /products
+### GET /products/:id
 ### PUT /products/:id
 ### DELETE /products/:id
 
@@ -53,7 +54,7 @@ Success:
 status : 200
 ``` json
 {
-    "acces_token" : "jwttoken"
+  "acces_token" : "jwttoken"
 }
 
 Failed :
@@ -76,10 +77,11 @@ _Request Header_
 _Request Body_
 ``` json
 {
-  "name": "<title to get insert into>",
-  "image_url": "<category to get insert into>",
+  "name": "<name to get insert into>",
+  "image_url": "<image_url to get insert into>",
   "price": "<price to get insert into>",
-  "stock":"<price to get insert into>"
+  "stock":"<stock to get insert into>",
+  "category":"<category to get insert into>"
 }
 ```
 
@@ -91,13 +93,14 @@ status : 201
 ``` json
 
 {
-    "id": "<given id by system>",
-    "name": "<title to get insert into>",
-    "image_url": "<category to get insert into>",
-    "price": "<price to get insert into>",
-    "stock":"<price to get insert into>",
-    "createdAt": "<date>",
-    "updatedAt": "<date>",
+  "id": "<given id by system>",
+  "name": "<name to get insert into>",
+  "image_url": "<image_url to get insert into>",
+  "price": "<price to get insert into>",
+  "stock":"<stock to get insert into>",
+  "category":"<category to get insert into>",
+  "createdAt": "<date>",
+  "updatedAt": "<date>",
 }
 
 Failed :
@@ -110,6 +113,58 @@ status : 400
 
 ### GET /products
 > Get all products
+
+_Request Header_
+``` json
+{
+  "not needed"
+}
+```
+
+_Request Body_
+``` json
+{
+  "not needed"
+}
+```
+
+Response :
+
+Success: 
+
+status : 200
+``` json
+[
+  {
+    "id": "<given id by system>",
+    "name": "<name to get insert into>",
+    "image_url": "<image_url to get insert into>",
+    "price": "<price to get insert into>",
+    "stock":"<stock to get insert into>",
+    "category":"<category to get insert into>",
+    "createdAt": "<date>",
+    "updatedAt": "<date>",
+  }, 
+  ....
+]
+
+Failed :
+
+status : 400 
+``` json
+{
+  "message": "Invalid Request"
+}
+```
+### GET /products/:id
+> Get one product
+
+_Request Params_
+``` json
+{
+  "id" : "<selected id by params>"
+}
+```
 
 _Request Header_
 ``` json
@@ -132,21 +187,22 @@ Success:
 status : 200
 ``` json
 {
-    "id": "<given id by system>",
-    "name": "<title to get insert into>",
-    "image_url": "<category to get insert into>",
-    "price": "<price to get insert into>",
-    "stock":"<price to get insert into>",
-    "createdAt": "<date>",
-    "updatedAt": "<date>",
+  "id": "<given id by system>",
+  "name": "<name to get insert into>",
+  "image_url": "<image_url to get insert into>",
+  "price": "<price to get insert into>",
+  "stock":"<stock to get insert into>",
+  "category":"<category to get insert into>",
+  "createdAt": "<date>",
+  "updatedAt": "<date>",
 }
 
 Failed :
 
-status : 400 
+status : 500 
 ``` json
 {
-  "message": "Invalid Request"
+  "message": "Invalid Server"
 }
 ```
 
@@ -154,6 +210,12 @@ status : 400
 
 > Update or replace a product by id
 
+_Request Params_
+``` json
+{
+  "id" : "<selected id by params>"
+}
+```
 
 _Request Header_
 ``` json
@@ -199,6 +261,7 @@ status : 400
 ### DELETE /products/:id
 
 > Delete a product by id
+
 _Request Header_
 ``` json
 {

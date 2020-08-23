@@ -3,7 +3,8 @@
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
         <router-link class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" to="/">Serba Ada Shop</router-link>
         <div class="input-group-append">
-            <a class="nav-link text-white" href="#"   @click="$bvModal.show('bv-modal-example')" v-if="isLogin === false">Login</a>
+            <a class="nav-link text-white" href="#" @click.prevent="putar" v-if="isLogin === true">Putar Audio</a>
+            <a class="nav-link text-white" href="#" @click="$bvModal.show('bv-modal-example')" v-if="isLogin === false">Login</a>
                 <b-modal id="bv-modal-example" hide-footer>
                 <template v-slot:modal-title>
                   Login Admin
@@ -39,6 +40,7 @@
 
 <script>
 import axios from 'axios'
+import { Howl } from 'howler'
 
 export default {
   name: 'Navbar',
@@ -92,6 +94,18 @@ export default {
         title: 'SUCCESS',
         text: message
       })
+    },
+    putar () {
+      const audio = new Howl({
+        src: ['KutetapMenanti(PopPunkCover).mp3'],
+        html5: true,
+        volume: 0.7,
+        format: 'mp3',
+        onend: function () {
+          console.log('finished')
+        }
+      })
+      audio.play()
     }
   },
   mounted () {
