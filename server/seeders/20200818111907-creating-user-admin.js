@@ -15,6 +15,7 @@ module.exports = {
     return queryInterface.bulkInsert('Users', [{
        email: 'admin@hot.id',
        password: Bcrypt.encrypt('1234'),
+       role: 'admin',
        createdAt : new Date(),
        updatedAt : new Date()
      }], {});
@@ -26,7 +27,8 @@ module.exports = {
      * Add commands to revert seed here.
      *
      * Example:
-     * await queryInterface.bulkDelete('People', null, {});
+     * 
      */
+    return queryInterface.bulkDelete('Users', null, {});
   }
 };
