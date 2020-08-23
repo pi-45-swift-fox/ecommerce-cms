@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "jest --detectOpenHandles --runInBand --forceExit --watchAll"
+    "test": "jest --detectOpenHandles --runInBand --forceExit --watchAll",
+    "start": "node app.js"
   },
   "keywords": [],
   "author": "Baril",
