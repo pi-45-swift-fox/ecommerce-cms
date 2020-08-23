@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --detectOpenHandles --forceExit --runInBand --watchAll"
+    "test": "jest --detectOpenHandles --forceExit --runInBand --watchAll",
+    "dev": "NODE_ENV=development mode app.js",
+    "start": "node app.js"
   },
   "keywords": [],
   "author": "",
