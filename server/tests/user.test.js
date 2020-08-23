@@ -1,53 +1,66 @@
 require('dotenv').config()
 const request = require('supertest')
-const app = require('../app')
+const app = require('../app.js')
 const jwt = require('jsonwebtoken')
 
-const user = {email: 'admin@mail.com', password: '1234'}
+describe('POST /login success', ()=>{
+    it('return access_token', (done)=>  {
+        request(app)
+        .post('/login')
+        .send({email:'admin@mail.com', password:'1234', role: 'admin'})
+        .set('Accept', 'application/json')
+        .then(response => {
+            const { body } = response
+            const token = jwt.sign({email: 'admin@mail.com'}, process.env.JWT_SECRET)
+            expect(body).toHaveProperty('access_token', token)
+            expect(response.status).toBe(200)
+            done()
+        })
+    })
+})
 
-describe('POST /login success', function() {
-  it('responds with json(access_token)', function(done) {
-    request(app)
-      .post('/login')
-      .send(user)
-      .set('Accept', 'application/json')
-      .then(response => {
-        const { status, body } = response
-        const token = jwt.sign({email: 'admin@mail.com'}, process.env.JWT_SECRET)
-        
-        expect(status).toBe(200)
-        expect(body).toHaveProperty('access_token', token)
-        done()    
-      })
-  });
-});
+describe('POST /login failed', ()=>{
+    it('return error,wrong password', (done)=>  {
+        request(app)
+        .post('/login')
+        .send({email:'admin@mail.com', password:'12345'})
+        .set('Accept', 'application/json')
+        .then(response => {
+            const { body } = response
 
-describe('POST /login failed', function() {
-  it('error, wrong email input', function(done) {
-    request(app)
-      .post('/login')
-      .send({email: 'maman@mail.com', password: '1234'})
-      .set('Accept', 'application/json')
-      .then(response => {
-        const { status, body } = response
-        
-        expect(status).toBe(401)
-        expect(body).toBe('message: Invalid password or email')
-        done();    
-      })
-  });
+            expect(body).toHaveProperty('message', ['Invalid password or email'])
+            expect(response.status).toBe(401)
+            done()
+        })
+    })
 
-  it('error, wrong password', function(done) {
-    request(app)
-      .post('/login')
-      .send({email: 'admin@mail.com', password: '22dmf'})
-      .set('Accept', 'application/json')
-      .then(response => {
-        const { status, body } = response
-        
-        expect(status).toBe(401)
-        expect(body).toBe('message: Invalid password or email')
-        done();    
-      })
-  });
-});
+    it(' error,wrong email', (done)=>  {
+        request(app)
+        .post('/login')
+        .send({ email:'admin8@mail.com', password:'1234' })
+        .set('Accept', 'application/json')
+        .then(response => {
+            const { body } = response
+
+            expect(body).toHaveProperty('message', ['Invalid password or email'])
+            expect(response.status).toBe(401)
+            done()
+        })
+    })
+
+    it('error,empty email and password', (done)=>  {
+        request(app)
+        .post('/login')
+        .send({ email:'', password:'' })
+        .set('Accept', 'application/json')
+        .then(response => {
+            const { body } = response
+            expect(body).toHaveProperty('message', ['Invalid password or email'])
+            expect(response.status).toBe(401)
+            done()
+        })
+    })
+
+    
+})
+

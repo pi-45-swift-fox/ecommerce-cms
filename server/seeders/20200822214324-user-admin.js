@@ -1,12 +1,9 @@
 'use strict';
-
-const { request } = require("express");
-
 const bcrypt = require('bcryptjs')
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const encryptPwd = bcrypt.hashSync('1234',10)
+    let encryptPwd = bcrypt.hashSync('1234',10)
     await queryInterface.bulkInsert('Users', [{
       email: 'admin@mail.com',
       password:encryptPwd,

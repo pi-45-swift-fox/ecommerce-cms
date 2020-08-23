@@ -6,15 +6,15 @@ const { sequelize } = require('../models')
 const { queryInterface} = sequelize
 
 const newProduct = {
-    name: 'Air Jordan 1',
-    image_url: 'https://images.unsplash.com/photo-1512374382149-233c42b6a83b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=675&q=80',
-    price: 5000000,
-    stock: 5,
-    category: 'shoes'
+    name: 'Skateboard',
+    image_url: 'https://images.unsplash.com/photo-1547447134-cd3f5c716030?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80',
+    price: 1000000,
+    stock: 50,
+    category: 'Hobby'
 }
-const user = {email: "admin@email.com", password: '1234'}
-const email = {email: 'admin@mail.com'}
-const access_token = jwt.sign(email, process.env.JWT_SECRET)
+const user = {email: "admin@mail.com", password: '1234', role: 'admin'}
+const userEmail = {email: 'admin@mail.com'}
+const access_token = jwt.sign(userEmail, process.env.JWT_SECRET)
 
 beforeAll(done => {
     request(app)
@@ -35,9 +35,8 @@ afterAll(() => {
     done()
 })
 
-// Create new product
-describe('POST /products success', function () {
-    it('respon data with json format', function (done) {
+describe('POST /products ', function () {
+    it('respon with json', function (done) {
         request(app)
         .post('/products')
         .send(newProduct)
@@ -52,8 +51,8 @@ describe('POST /products success', function () {
     })
 })
 
-describe('POST /products failed', function () {
-    it('name required', function (done) {
+describe('POST /products gagal', function () {
+    it('name tidak diisi', function (done) {
         request(app)
         .post('/products')
         .send({
@@ -68,12 +67,12 @@ describe('POST /products failed', function () {
             const { status, body } = response
             console.log(body);
             expect(status).toBe(403)
-            expect(body).toHaveProperty('message', expect.any(Array))
+            expect(body).toHaveProperty("message","Validation error: Please Fill the name")
             done()
         })
     })
 
-    it('image_url required', function (done) {
+    it('image_url tidak diisi', function (done) {
         request(app)
         .post('/products')
         .send({
@@ -88,12 +87,12 @@ describe('POST /products failed', function () {
             const { status, body } = response
             console.log(body);
             expect(status).toBe(403)
-            expect(body).toHaveProperty('message', expect.any(Array))
+            expect(body).toHaveProperty("message","Validation error: Please Fill the image url")
             done()
         })
     })
 
-    it('price ', function (done) {
+    it('price dibawah 1', function (done) {
         request(app)
         .post('/products')
         .send({
@@ -108,7 +107,7 @@ describe('POST /products failed', function () {
             const { status, body } = response
             console.log(body);
             expect(status).toBe(403)
-            expect(body).toHaveProperty('message', expect.any(Array))
+            expect(body).toHaveProperty("message","Validation error: Value must be greater than 0")
             done()
         })
     })
@@ -177,7 +176,7 @@ describe('PUT /products berhasil', function () {
         request(app)
         .put('/products/'+ 14)
         .send({
-            name: 'Skate Board',
+            name: 'kemeja kerja',
             image_url: newProduct.image_url,
             price: newProduct.price,
             stock: newProduct.stock,
