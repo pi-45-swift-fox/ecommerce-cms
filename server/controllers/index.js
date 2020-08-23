@@ -52,6 +52,21 @@ class Controller {
         }
     }
 
+    static async readOne(req, res, next){
+        console.log('masuk');
+        try {
+            const id = req.params.id
+            const one = await Product.findOne({
+                where: {
+                    id
+                }
+            })
+            res.status(200).json(one)
+            console.log(one);
+        } catch (error) {
+            next(error)
+        }
+    }    
     static async update(req, res, next){
         try {
             console.log('masuk controller');

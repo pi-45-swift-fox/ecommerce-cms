@@ -7,7 +7,7 @@
           <h6>Stock : {{ product.stock }}</h6>
         </b-card-text>
         <b-button-group class="mx-2">
-          <router-link :to="'/editproduct/'+product.id " class="btn btn-md btn-outline-dark" :product="product">Edit</router-link> &nbsp;
+          <router-link :to="'/editproduct/'+product.id " class="btn btn-md btn-outline-dark" :product="product" @click.prevent="lanjut">Edit</router-link> &nbsp;
           <b-button variant="outline-dark" @click.prevent="deleteProduct(product.id)">Delete</b-button>
         </b-button-group>
       </b-card>

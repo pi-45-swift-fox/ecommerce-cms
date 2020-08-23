@@ -79,6 +79,7 @@ export default {
     signOut () {
       localStorage.clear()
       this.isLogin = false
+      this.showAlertSuccess('Successfully Logged Out')
     },
     showAlertFail (message) {
       this.$swal({

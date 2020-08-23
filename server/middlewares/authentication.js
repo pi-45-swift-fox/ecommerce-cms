@@ -2,7 +2,7 @@ const { User } = require('../models')
 const jwt = require('jsonwebtoken')
 
 function authentication(req, res, next) {
-    
+    console.log('masuk');
     try {
         if (!req.headers.access_token) {
             res.status(401).json({message: 'Not Authorized'})

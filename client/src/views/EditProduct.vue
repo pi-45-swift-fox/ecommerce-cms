@@ -1,27 +1,6 @@
 <template>
   <div>
     <div class="container mt-5">
-      <p>Data Before</p>
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Image Url</th>
-            <th scope="col">Price</th>
-            <th scope="col">Stock</th>
-            <th scope="col">Category</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">{{editProduct[0].name}}</th>
-            <td>{{editProduct[0].image_url}}/td>
-            <td>{{editProduct[0].price}}</td>
-            <td>{{editProduct[0].stock}}</td>
-            <td>{{editProduct[0].category}}</td>
-          </tr>
-        </tbody>
-      </table>
       <b-form @submit="onSubmit" @reset="onReset" v-if="show" >
         <b-form-group
           id="input-group-1"
@@ -32,7 +11,6 @@
             id="input-1"
             v-model="form.name"
             type="name"
-            :placeholder="editProduct[0].name"
           ></b-form-input>
         </b-form-group>
 
@@ -40,7 +18,6 @@
           <b-form-input
             id="input-2"
             v-model="form.image_url"
-            :placeholder="editProduct[0].image_url"
           ></b-form-input>
         </b-form-group>
 
@@ -48,7 +25,6 @@
           <b-form-input
             id="input-3"
             v-model="form.price"
-            :placeholder="editProduct[0].price"
           ></b-form-input>
         </b-form-group>
 
@@ -56,7 +32,6 @@
           <b-form-input
             id="input-4"
             v-model="form.stock"
-            :placeholder="editProduct[0].stock"
           ></b-form-input>
         </b-form-group>
 
@@ -81,15 +56,14 @@ import axios from 'axios'
 
 export default {
   name: 'EditProduct',
-  props: ['product'],
   data () {
     return {
       form: {
-        name: '',
-        image_url: '',
-        price: '',
-        stock: '',
-        category: ''
+        name: this.$store.state.product.name,
+        image_url: this.$store.state.product.image_url,
+        price: this.$store.state.product.price,
+        stock: this.$store.state.product.stock,
+        category: this.$store.state.product.category
       },
       show: true,
       categories: [
@@ -103,13 +77,6 @@ export default {
         { text: 'Furniture', value: 'Furniture' },
         { text: 'Others', value: 'Others' }
       ]
-    }
-  },
-  computed: {
-    editProduct () {
-      return this.$store.state.products.filter(product => {
-        return product.id === +this.$route.params.id
-      })
     }
   },
   methods: {
@@ -143,7 +110,7 @@ export default {
       this.form.image_url = ''
       this.form.price = ''
       this.form.stock = ''
-      this.form.category = null
+      this.form.category = ''
       // Trick to reset/clear native browser form validation state
       this.show = false
       this.$nextTick(() => {
@@ -165,8 +132,8 @@ export default {
       })
     }
   },
-  mounted () {
-    this.$store.commit('fetchProducts')
+  created () {
+    this.$store.dispatch('getProduct', this.$route.params.id)
   }
 }
 </script>

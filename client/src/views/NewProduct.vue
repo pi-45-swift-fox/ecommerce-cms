@@ -112,7 +112,7 @@ export default {
       this.form.image_url = ''
       this.form.price = ''
       this.form.stock = ''
-      this.form.category = null
+      this.form.category = ''
       // Trick to reset/clear native browser form validation state
       this.show = false
       this.$nextTick(() => {

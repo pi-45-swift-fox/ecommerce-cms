@@ -6,13 +6,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    // baseUrl: 'https://ecommerce-cms-izzul.herokuapp.com',
     baseUrl: 'http://localhost:3000',
     products: [],
-    name: '',
-    image_url: '',
-    price: 0,
-    stock: 0,
-    category: ''
+    product: {}
   },
   mutations: {
     fetchProducts (state) {
@@ -27,23 +24,28 @@ export default new Vuex.Store({
           console.log('error', err)
         })
     },
-    updateName (state, newName) {
-      state.name = newName
+    SET_SELECTED_PRODUCT (state, selected) {
+      state.product = selected
     },
-    updateImage_url (state, newImage) {
-      state.image_url = newImage
-    },
-    updatePrice (state, newPrice) {
-      state.price = newPrice
-    },
-    updateStock (state, newStock) {
-      state.stock = newStock
-    },
-    updateCategory (state, newCategory) {
-      state.category = newCategory
+    SET_PRODUCT (state, selected) {
+      state.product = selected
     }
   },
   actions: {
+    getProduct ({ commit, state }, id) {
+      axios({
+        method: 'GET',
+        url: state.baseUrl + `/products/${id}`,
+        headers: {
+          access_token: localStorage.access_token
+        }
+      })
+        .then((result) => {
+          commit('SET_SELECTED_PRODUCT', result.data)
+        }).catch((err) => {
+          console.log(err)
+        })
+    }
   },
   modules: {
   }
