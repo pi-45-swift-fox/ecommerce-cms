@@ -2,65 +2,73 @@
     <div class="addPage">
         <div class="addForm">
             <i class="fa fa-cubes" aria-hidden="true"></i>
-            <h4>Product</h4>
+            <h4>Banner</h4>
             <hr>
             <!-- add form -->
-            <form>
+            <form v-if="setStatus" @submit.prevent="addBanner">
                 <div class="form-group">
-                    <label for="name">Product's Name</label> 
-                    <input type="text" class="form-control" id="name" placeholder="Campaign Games" autocomplete="off">
+                    <label for="name">Banner's Name</label> 
+                    <input v-model="name" type="text" class="form-control"
+                    id="name" placeholder="Campaign Games" autocomplete="off">
                 </div>
                 <div class="form-group">
                     <label for="image_url">Image URL</label>
-                    <input type="text" class="form-control" id="image_url" placeholder="http://image.jpg" autocomplete="off">
+                    <input v-model="image_url" type="text" class="form-control"
+                    id="image_url" placeholder="http://image.jpg" autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <label for="category">Category</label><br>
-                    <select name="category" id="category">
-                    <option value="select" selected disabled>--select category--</option>
-                    <option value="Manga">Manga</option>
-                    <option value="Game">Game</option>
-                    <option value="Gadget & Electronic">Gadget & Electronic</option>
+                    <label for="category">Banner's Status</label><br>
+                    <select v-model="status" name="status" id="status">
+                      <option value="select" selected disabled>--select status--</option>
+                      <option value="Active">Active</option>
+                      <option value="Inactive">Inactive</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="price">Price</label>
-                    <input type="number" class="form-control" id="price" placeholder="10000" autocomplete="off">
-                </div>
-                <div class="form-group">
-                    <label for="stock">Stock</label>
-                    <input type="number" class="form-control" id="stock" placeholder="10" autocomplete="off">
+                    <label for="description">Description</label><br>
+                    <textarea
+                    v-model="description"
+                    name="description"
+                    id="" cols="35" rows="5" placeholder="describe campaign...">
+                    </textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Create</button>
+                <router-link :to="{name: 'BannerTable'}">
+                  <button type="button" class="ml-2 btn btn-secondary">Cancel</button>
+                </router-link>
             </form>
             <!-- edit form -->
-            <form>
+            <form v-else @submit.prevent="editBanner">
                 <div class="form-group">
-                    <label for="name">Product's Name</label>
-                    <input type="text" class="form-control" id="name" placeholder="Campaign Games" autocomplete="off">
+                    <label for="name">Banner's Name</label>
+                    <input v-model="name" type="text" class="form-control"
+                    id="name" placeholder="Campaign Games" autocomplete="off">
                 </div>
                 <div class="form-group">
                     <label for="image_url">Image URL</label>
-                    <input type="text" class="form-control" id="image_url" placeholder="http://image.jpg" autocomplete="off">
+                    <input v-model="image_url" type="text" class="form-control"
+                    id="image_url" placeholder="http://image.jpg" autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <label for="category">Category</label><br>
-                    <select name="category" id="category">
-                    <option value="select" selected disabled>--select category--</option>
-                    <option value="Manga">Manga</option>
-                    <option value="Game">Game</option>
-                    <option value="Gadget & Electronic">Gadget & Electronic</option>
+                    <label for="category">Banner's Status</label><br>
+                    <select v-model="status" name="status" id="status">
+                      <option value="select" selected disabled>--select status--</option>
+                      <option value="Active">Active</option>
+                      <option value="Inactive">Inactive</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="price">Price</label>
-                    <input type="number" class="form-control" id="price" placeholder="10000" autocomplete="off">
-                </div>
-                <div class="form-group">
-                    <label for="stock">Stock</label>
-                    <input type="number" class="form-control" id="stock" placeholder="10" autocomplete="off">
+                    <label for="description">Description</label><br>
+                    <textarea
+                    v-model="description"
+                    name="description"
+                    cols="35" rows="5" placeholder="campaign..">
+                    </textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Update</button>
+                <router-link :to="{name: 'BannerTable'}">
+                  <button type="button" class="ml-2 btn btn-secondary">Cancel</button>
+                </router-link>
             </form>
         </div>
     </div>
@@ -68,7 +76,78 @@
 
 <script>
 export default {
-
+  name: 'FormBanner',
+  data() {
+    return {
+      addForm: true,
+      addName: '',
+      addImage: '',
+      addDescription: '',
+      addStatus: 'select',
+    };
+  },
+  computed: {
+    setStatus() {
+      return this.$store.state.statusAdd;
+    },
+    name: {
+      get() {
+        this.addName = this.$store.state.banner.name;
+        return this.$store.state.banner.name;
+      },
+      set(newName) {
+        this.addName = newName;
+      }
+    },
+    image_url: {
+      get() {
+        this.addImage = this.$store.state.banner.image_url;
+        return this.$store.state.banner.image_url;
+      },
+      set(newImage) {
+        this.addImage = newImage;
+      }
+    },
+    description: {
+      get() {
+        this.addDescription = this.$store.state.banner.description;
+        return this.$store.state.banner.description;
+      },
+      set(newDescription) {
+        this.addDescription = newDescription;
+      }
+    },
+    status: {
+      get() {
+        this.addStatus = this.$store.state.banner.status || 'select';
+        return this.$store.state.banner.status || 'select';
+      },
+      set(newStatus) {
+        this.addStatus = newStatus;
+      }
+    },
+  },
+  methods: {
+    addBanner() {
+      const newBanner = {
+        name: this.addName,
+        image_url: this.addImage,
+        status: this.addStatus,
+        description: this.addDescription,
+      };
+      this.$store.dispatch('addBanner', newBanner);
+    },
+    editBanner() {
+      const updatedBanner = {
+        name: this.addName,
+        image_url: this.addImage,
+        status: this.addStatus,
+        description: this.addDescription,
+        id: this.$store.state.banner.id,
+      };
+      this.$store.dispatch('editBanner', updatedBanner);
+    },
+  },
 }
 </script>
 

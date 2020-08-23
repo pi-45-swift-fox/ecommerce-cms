@@ -5,18 +5,20 @@
             <h4>Product</h4>
             <hr>
             <!-- add form -->
-            <form>
+            <form v-if="setStatus" @submit.prevent="addProduct">
                 <div class="form-group">
                     <label for="name">Product's Name</label> 
-                    <input type="text" class="form-control" id="name" placeholder="Fifa 2021" autocomplete="off">
+                    <input v-model="name" type="text" class="form-control"
+                    id="name" placeholder="Fifa 2021" autocomplete="off">
                 </div>
                 <div class="form-group">
                     <label for="image_url">Image URL</label>
-                    <input type="text" class="form-control" id="image_url" placeholder="http://image.jpg" autocomplete="off">
+                    <input v-model="image_url" type="text" class="form-control"
+                    id="image_url" placeholder="http://image.jpg" autocomplete="off">
                 </div>
                 <div class="form-group">
                     <label for="category">Category</label><br>
-                    <select name="category" id="category">
+                    <select v-model="category" name="category" id="category">
                     <option value="select" selected disabled>--select category--</option>
                     <option value="Manga">Manga</option>
                     <option value="Game">Game</option>
@@ -25,27 +27,42 @@
                 </div>
                 <div class="form-group">
                     <label for="price">Price</label>
-                    <input type="number" class="form-control" id="price" placeholder="10000" autocomplete="off">
+                    <input v-model="price" type="number" class="form-control"
+                    id="price" placeholder="10000" autocomplete="off">
                 </div>
                 <div class="form-group">
                     <label for="stock">Stock</label>
-                    <input type="number" class="form-control" id="stock" placeholder="10" autocomplete="off">
+                    <input v-model="stock" type="number" class="form-control"
+                    id="stock" placeholder="10" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="BannerId">Set Banner</label><br>
+                    <select v-model="BannerId" name="BannerId" id="BannerId">
+                    <option value="select" selected disabled>--select banner--</option>
+                    <option v-for="(banner, index) in $store.state.banners" :key="index"
+                    :value=banner.id>{{banner.name}}</option>
+                    </select>
                 </div>
                 <button type="submit" class="btn btn-primary">Create</button>
+                <router-link :to="{name: 'ProductTable'}">
+                  <button type="button" class="ml-2 btn btn-secondary">Cancel</button>
+                </router-link>
             </form>
             <!-- edit form -->
-            <form>
+            <form v-else @submit.prevent="editProduct">
                 <div class="form-group">
                     <label for="name">Product's Name</label>
-                    <input type="text" class="form-control" id="name" placeholder="Fifa 2021">
+                    <input v-model="name" type="text" class="form-control"
+                    id="name" placeholder="Fifa 2021">
                 </div>
                 <div class="form-group">
                     <label for="image_url">Image URL</label>
-                    <input type="text" class="form-control" id="image_url" placeholder="http://image.jpg">
+                    <input v-model="image_url" type="text" class="form-control"
+                    id="image_url" placeholder="http://image.jpg">
                 </div>
                 <div class="form-group">
                     <label for="category">Category</label><br>
-                    <select name="category" id="category">
+                    <select v-model="category" name="category" id="category">
                     <option value="select" selected disabled>--select category--</option>
                     <option value="Manga">Manga</option>
                     <option value="Game">Game</option>
@@ -54,13 +71,26 @@
                 </div>
                 <div class="form-group">
                     <label for="price">Price</label>
-                    <input type="number" class="form-control" id="price" placeholder="10000">
+                    <input v-model="price" type="number" class="form-control"
+                    id="price" placeholder="10000">
                 </div>
                 <div class="form-group">
                     <label for="stock">Stock</label>
-                    <input type="number" class="form-control" id="stock" placeholder="10">
+                    <input v-model="stock" type="number" class="form-control"
+                    id="stock" placeholder="10">
+                </div>
+                <div class="form-group">
+                    <label for="BannerId">Set Banner</label><br>
+                    <select v-model="BannerId" name="BannerId" id="BannerId">
+                    <option value="select" selected disabled>--select banner--</option>
+                    <option v-for="(banner, index) in $store.state.banners" :key="index"
+                    :value=banner.id>{{banner.name}}</option>
+                    </select>
                 </div>
                 <button type="submit" class="btn btn-primary">Update</button>
+                <router-link :to="{name: 'ProductTable'}">
+                  <button type="button" class="ml-2 btn btn-secondary">Cancel</button>
+                </router-link>
             </form>
         </div>
     </div>
@@ -68,6 +98,106 @@
 
 <script>
 export default {
+  name: "FormProduct",
+  data() {
+    return {
+      addForm: true,
+      addName: '',
+      addImage: '',
+      addPrice: 0,
+      addStock: 0,
+      addCategory: 'select',
+      addBannerId: 0,
+    };
+  },
+  created() {
+    this.$store.dispatch('showBanners');
+  },
+  computed: {
+    setStatus () {
+      return this.$store.state.statusAdd;
+    },
+    name: {
+      get () {
+        this.addName = this.$store.state.product.name;
+        return this.$store.state.product.name;
+      },
+      set (newName) {
+        this.addName = newName;
+      },
+    },
+    image_url: {
+      get () {
+        this.addImage = this.$store.state.product.image_url;
+        return this.$store.state.product.image_url;
+      },
+      set (newImage) {
+        this.addImage = newImage
+      }
+    },
+    price: {
+      get() {
+        this.addPrice = this.$store.state.product.price;
+        return this.$store.state.product.price;
+      },
+      set(newPrice) {
+        this.addPrice = newPrice;
+      }
+    },
+    stock: {
+      get() {
+        this.addStock = this.$store.state.product.stock;
+        return this.$store.state.product.stock;
+      },
+      set(newStock) {
+        this.addStock = newStock;
+      }
+    },
+    category: {
+      get() {
+        this.addCategory = this.$store.state.product.category || 'select';
+        return this.$store.state.product.category || 'select';
+      },
+      set(newCategory) {
+        this.addCategory = newCategory;
+      },
+    },
+    BannerId: {
+      get() {
+        this.addBannerId = this.$store.state.product.BannerId || 'select';
+        return this.$store.state.product.BannerId || 'select';
+      },
+      set(newBannerId) {
+        this.addBannerId = newBannerId;
+      },
+    },
+  },
+  methods: {
+    addProduct () {
+      const newProduct = {
+        name: this.addName,
+        image_url: this.addImage,
+        price: this.addPrice,
+        stock: this.addStock,
+        category: this.addCategory,
+        BannerId: this.addBannerId
+      };
+      this.$store.dispatch('addProduct', newProduct);
+    },
+    editProduct () {
+      const updatedProduct = {
+        name: this.addName,
+        image_url: this.addImage,
+        price: this.addPrice,
+        stock: this.addStock,
+        category: this.addCategory,
+        id: this.$store.state.product.id,
+        BannerId: this.addBannerId,
+      };
+      console.log(this.$store.state.product.id, 'ini id nya');
+      this.$store.dispatch('editProduct', updatedProduct);
+    },
+  },
 
 }
 </script>

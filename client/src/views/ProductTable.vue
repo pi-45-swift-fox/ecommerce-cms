@@ -15,7 +15,8 @@
                   </tr>
               </thead>
               <tbody class="table-bordered">
-
+                <tableDataProduct v-for="(product, index) in $store.state.products"
+                :key="index" :product="product" :index="index"></tableDataProduct>
               </tbody>
           </table>
         </div>
@@ -23,10 +24,17 @@
 </template>
 
 <script>
-export default {
-  name:"ProductTable"
+import TableDataProduct from '../components/TableDataProduct';
 
-}
+export default {
+  name:"ProductTable",
+  components: {
+    TableDataProduct,
+  },
+  created() {
+    this.$store.dispatch('showProducts')
+  },
+};
 </script>
 
 <style>

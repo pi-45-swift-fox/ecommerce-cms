@@ -14,7 +14,9 @@
                   </tr>
               </thead>
               <tbody class="table-bordered">
-
+                <TableDataBanner v-for="(banner, index) in $store.state.banners"
+                :key="banner.id" :index="index" :banner="banner">
+            </TableDataBanner>
               </tbody>
           </table>
         </div>
@@ -22,9 +24,16 @@
 </template>
 
 <script>
-export default {
-  name:"BannerTable"
+import TableDataBanner from '../components/TableDataBanner';
 
+export default {
+  name:"BannerTable",
+  components: {
+    TableDataBanner,
+  },
+  created() {
+    this.$store.dispatch('showBanners');
+  }
 }
 </script>
 
