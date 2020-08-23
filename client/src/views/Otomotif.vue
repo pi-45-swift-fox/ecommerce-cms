@@ -4,7 +4,7 @@
       <h1 class="h2">Category Otomotif</h1>
       <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group mr-2">
-          <router-link to="/newproduct" type="button"  class="btn btn-sm btn-outline-secondary">+ New Product</router-link>
+            <b-button variant="outline-secondary" size="sm" @click.prevent="lanjut()">+ New Product</b-button>
         </div>
       </div>
     </div>
@@ -24,6 +24,22 @@ export default {
   name: 'Otomotif',
   components: {
     ProductCard
+  },
+  methods: {
+    showAlertFail (message) {
+      this.$swal({
+        icon: 'error',
+        title: 'Oops...',
+        text: message
+      })
+    },
+    lanjut () {
+      if (!localStorage.access_token) {
+        this.showAlertFail('Not Authorized')
+      } else {
+        this.$router.push({ path: '/newproduct' })
+      }
+    }
   },
   computed: {
     Otomotif () {

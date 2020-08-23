@@ -131,10 +131,19 @@ export default {
         text: message
       })
     }
-  },
-  created () {
-    this.$store.dispatch('getProduct', this.$route.params.id)
   }
+  // beforeCreate () {
+  //   this.$store.dispatch('getProduct', this.$route.params.id)
+  // }
+  // created () {
+  //   this.$store.dispatch('getProduct', this.$route.params.id)
+  // }
+  // beforeMount () {
+  //   this.$store.dispatch('getProduct', this.$route.params.id)
+  // }
+  // mounted () {
+  //   this.$store.dispatch('getProduct', this.$route.params.id)
+  // }
 }
 </script>
 

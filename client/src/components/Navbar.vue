@@ -1,10 +1,7 @@
 <template>
     <div>
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-        <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">Serba Ada Shop</a>
-        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-        </button>
+        <router-link class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" to="/">Serba Ada Shop</router-link>
         <div class="input-group-append">
             <a class="nav-link text-white" href="#"   @click="$bvModal.show('bv-modal-example')" v-if="isLogin === false">Login</a>
                 <b-modal id="bv-modal-example" hide-footer>
@@ -80,6 +77,7 @@ export default {
       localStorage.clear()
       this.isLogin = false
       this.showAlertSuccess('Successfully Logged Out')
+      this.$store.state.product = {}
     },
     showAlertFail (message) {
       this.$swal({

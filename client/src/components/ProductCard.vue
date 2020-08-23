@@ -7,7 +7,8 @@
           <h6>Stock : {{ product.stock }}</h6>
         </b-card-text>
         <b-button-group class="mx-2">
-          <router-link :to="'/editproduct/'+product.id " class="btn btn-md btn-outline-dark" :product="product" @click.prevent="lanjut">Edit</router-link> &nbsp;
+          <!-- <router-link :to="'/editproduct/'+product.id" class="btn btn-md btn-outline-dark" >Edit</router-link> &nbsp; -->
+          <b-button variant="outline-dark" @click.prevent="lanjut(product.id)">Edit</b-button>
           <b-button variant="outline-dark" @click.prevent="deleteProduct(product.id)">Delete</b-button>
         </b-button-group>
       </b-card>
@@ -55,6 +56,24 @@ export default {
         title: 'SUCCESS',
         text: message
       })
+    },
+    lanjut (id) {
+      if (!localStorage.access_token) {
+        this.showAlertFail('Not Authorized')
+      }
+      axios({
+        method: 'GET',
+        url: this.$store.state.baseUrl + `/products/${id}`,
+        headers: {
+          access_token: localStorage.access_token
+        }
+      })
+        .then((result) => {
+          this.$store.commit('SET_SELECTED_PRODUCT', result.data)
+          this.$router.push({ path: `/editproduct/${id}` })
+        }).catch((err) => {
+          console.log(err)
+        })
     }
   },
   created () {
