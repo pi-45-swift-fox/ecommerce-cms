@@ -24,6 +24,17 @@ export default new Vuex.Store({
     },
     userEmail (state, email) {
       state.userEmail = email
+    },
+    deleteProduct (state, id) {
+      state.products = state.products.filter(x => x.id !== id)
+    },
+    editProduct (state, product) {
+      state.products = state.products.map(x => {
+        if (x.id === product.id) {
+          x = product
+        }
+        return x
+      })
     }
   },
   actions: {
@@ -73,6 +84,23 @@ export default new Vuex.Store({
         })
       console.log(product)
     },
+    editProduct (state, product) {
+      axios({
+        method: 'put',
+        url: `http://localhost:3000/products/${product.id}`,
+        data: product,
+        headers: {
+          access_token: localStorage.access_token
+        }
+      })
+        .then(response => {
+          state.commit('editProduct', response.data)
+          router.push({ name: 'Products' })
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
     getOneProduct (state, id) {
       axios({
         method: 'get',
@@ -83,6 +111,22 @@ export default new Vuex.Store({
       })
         .then(response => {
           state.commit('eachProduct', response.data)
+        })
+        .catch(err => {
+          console.log(err)
+          router.push('/products/not-found')
+        })
+    },
+    deleteProduct (state, id) {
+      axios({
+        method: 'delete',
+        url: `http://localhost:3000/products/${id}`,
+        headers: {
+          access_token: localStorage.access_token
+        }
+      })
+        .then(response => {
+          state.commit('deleteProduct', id)
         })
         .catch(err => {
           console.log(err)
@@ -120,6 +164,9 @@ export default new Vuex.Store({
           re = RegExp(`${filter}*`, 'gi')
           return state.products.filter(x => re.test(x.name))
       }
+    },
+    getProductLength: (state) => {
+      return state.products.length
     }
   }
 })

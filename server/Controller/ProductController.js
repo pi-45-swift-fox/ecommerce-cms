@@ -3,7 +3,7 @@ const { Product } = require('../models');
 class ProductController {
   static view(req, res, next)
   {
-    Product.findAll()
+    Product.findAll({order: [['id', 'ASC']]})
       .then(data => {
         return res.status(200).json(data);
       })
@@ -31,6 +31,7 @@ class ProductController {
       tags: req.body.tags,
       description: req.body.description
     }
+    console.log(newProduct);
 
     Product.create(newProduct)
       .then(data => {

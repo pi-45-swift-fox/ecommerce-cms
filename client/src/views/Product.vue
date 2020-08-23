@@ -10,7 +10,7 @@
             </div>
             <div class="profile mt-3">
               <h6>{{$store.state.userEmail}}</h6>
-              <p>Total products: {{$store.getters.getProduct.length}}</p>
+              <p>Total products: {{$store.getters.getProductLength}}</p>
             </div>
           </div>
           <div class="grid-item-3 shadow mb-2 rounded-lg">
@@ -174,7 +174,7 @@
                 <div class="">
                   <h2>{{$store.getters.convertToPascal(product.name)}}</h2>
                   <p>Rp. {{$store.getters.setMoney(product.price)}} | {{product.stock}} left</p>
-                  <router-link :to="{ name: 'ProductEach', params: { id: product.id } }">Show details</router-link> | <a href="" class="text-danger">Delete</a><br>
+                  <router-link :to="{ name: 'ProductEach', params: { id: product.id } }">Show details</router-link> | <a @click.prevent="showMsgBoxTwo(product.id)" class="text-danger">Delete</a><br>
                   <b-button disabled pill size="sm" class="mt-2">#{{product.tags}}</b-button>
                 </div>
               </div>
@@ -197,15 +197,15 @@ export default {
   },
   data () {
     return {
-      products: [],
       filter: '',
+      search: '',
+      searchTemp: '',
+      boxTwo: '',
       name: '',
       image_url: '',
       price: '',
       stock: '',
       tags: '',
-      search: '',
-      searchTemp: '',
       description: '',
       nameState: null,
       image_urlState: null,
@@ -223,9 +223,6 @@ export default {
     }
   },
   methods: {
-    setProductData () {
-      this.products = this.$store.state.products
-    },
     checkFormValidity () {
       const valid = this.$refs.form.checkValidity()
 
@@ -292,11 +289,35 @@ export default {
         default:
           return false
       }
+    },
+    showMsgBoxTwo (id) {
+      console.log(id)
+      this.boxTwo = ''
+      this.$bvModal.msgBoxConfirm('Please confirm that you want to delete.', {
+        title: 'Please Confirm',
+        size: 'sm',
+        buttonSize: 'sm',
+        okVariant: 'danger',
+        okTitle: 'YES',
+        cancelTitle: 'NO',
+        footerClass: 'p-2',
+        hideHeaderClose: false,
+        centered: true
+      })
+        .then(value => {
+          this.boxTwo = value
+          console.log('test masuk')
+          if (this.boxTwo) {
+            this.$store.dispatch('deleteProduct', id)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   },
   created () {
     this.$store.dispatch('fetchProduct')
-    this.setProductData()
   }
 }
 </script>
