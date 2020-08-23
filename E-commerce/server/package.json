@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --detectOpenHandles --forceExit --runInBand --watchAll",
-    "dev": "NODE_ENV=development mode app.js",
+    "dev": "NODE_ENV=development node app.js",
     "start": "node app.js"
   },
   "keywords": [],
