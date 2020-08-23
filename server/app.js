@@ -16,10 +16,10 @@ app.use(route)
 app.use(errorHandler)
 
 
-if (process.env.NODE_ENV !== 'test') {
+
     app.listen(port, () => {
         console.log('app running')
     })
-}
+
 
 module.exports = app

@@ -4,6 +4,10 @@ const ProductController = require('../controllers/ProductController')
 const authenticate  = require('../middlewares/authenticate')
 const authorization = require('../middlewares/authorization')
 
+route.get('/', function(req, res) {
+    res.status(200).json({ msg: 'welcome heroku' })
+})
+
 route.post('/login', UserController.login)
 
 route.use(authenticate, authorization)
