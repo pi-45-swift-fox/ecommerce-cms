@@ -18,6 +18,7 @@ export default {
       this.$store.commit('set_current_state', true)
     } else {
       this.$store.commit('set_current_state', false)
+      this.$router.push('/login')
     }
   }
 }

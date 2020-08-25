@@ -35,8 +35,20 @@ export default {
       this.$router.push('/products/add')
     }
   },
-  created: function () {
-    this.$store.dispatch('fetchProducts')
+  created: async function () {
+    await this.$store.dispatch('fetchProducts')
+
+    if (this.$store.state.feedback_error) {
+      if (this.$store.state.login) {
+        console.log('cms hanya untuk admin, yang logged in user')
+        await this.$store.dispatch('logout')
+        this.$router.push('/login')
+        console.log('maaf Anda kami paksa untuk logout')
+      } else {
+        this.$router.push('/login')
+      }
+      this.$store.state.feedback_error = false
+    }
   }
 }
 </script>

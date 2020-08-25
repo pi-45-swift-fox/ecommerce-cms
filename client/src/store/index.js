@@ -18,7 +18,8 @@ export default new Vuex.Store({
     edit: {
       product: {}
     },
-    login: false
+    login: false,
+    feedback_error: false
   },
   mutations: {
     set_current_state (state, val) {
@@ -45,16 +46,12 @@ export default new Vuex.Store({
     },
     updatePrice (state, name) {
       state.edit.product.price = name
+    },
+    feedback_error (state, val) {
+      state.feedback_error = val
     }
   },
   actions: {
-    // checkLogin ({ commit }, status) {
-    //   if (status) {
-    //     commit('set_current_state', true)
-    //   } else {
-    //     commit('set_current_state', false)
-    //   }
-    // }, Lupa ini apa, sementara di comment
     async login ({ commit }, { email, password }) {
       await axios.post('/login', {
         email,
@@ -80,7 +77,7 @@ export default new Vuex.Store({
           }
         })
     },
-    logout ({ commit }) {
+    async logout ({ commit }) {
       localStorage.removeItem('access_token')
       commit('set_current_state', false)
     },
@@ -183,23 +180,37 @@ export default new Vuex.Store({
           }
         })
     },
-    fetchProducts ({ commit }) {
-      axios.get('/products')
+    async fetchProducts ({ commit }) {
+      await axios({
+        method: 'GET',
+        url: '/products',
+        headers: {
+          access_token: localStorage.access_token
+        }
+      })
         .then(response => {
           const data = response.data
 
           commit('set_products', data)
         })
         .catch(error => {
-          Toast.fire({
-            icon: 'warning',
-            title: 'Whoops, something went wrong! Check console and contact the developer'
-          })
-          console.log(error)
+          if (error.response.status === 403) swal.fire('Unauthorized', 'You need to login as admin first', 'info')
+          else {
+            Toast.fire({
+              icon: 'warning',
+              title: 'Whoops, something went wrong! Check console and contact the developer'
+            })
+          }
         })
     },
     fetchSingleProduct ({ commit }, id) {
-      axios.get(`products/${id}`)
+      axios({
+        method: 'GET',
+        url: `/products/${id}`,
+        headers: {
+          access_token: localStorage.access_token
+        }
+      })
         .then(response => {
           const data = response.data
 

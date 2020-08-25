@@ -2,7 +2,7 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <button class="btn btn-link" v-if="$store.state.login" @click="$store.dispatch('logout')">Logout</button>
+      <router-link class="btn btn-link" v-if="$store.state.login" to="/logout">Logout</router-link>
       <router-link v-else to="/login">Login</router-link>
     </div>
     <router-view/>
