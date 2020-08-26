@@ -1,7 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Login from '../views/Login.vue'
 import Logout from '../views/Logout.vue'
+import AddProduct from '../views/AddProductForm.vue'
+import ProductDetail from '../views/EditProductForm.vue'
 
 Vue.use(VueRouter)
 
@@ -14,7 +17,7 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue')
+    component: Login
   },
   {
     path: '/logout',
@@ -24,12 +27,12 @@ const routes = [
   {
     path: '/products/add',
     name: 'AddProduct',
-    component: () => import(/* webpackChunkName: "addproduct" */ '../views/AddProductForm')
+    component: AddProduct
   },
   {
     path: '/products/:id',
     name: 'ProductDetail',
-    component: () => import(/* webpackChunkName: "productdetail" */ '../views/EditProductForm')
+    component: ProductDetail
   }
 ]
 
