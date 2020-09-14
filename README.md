@@ -1,6 +1,9 @@
 # ecommerce-cms
 Membuat website untuk management content ecommerce ( dipakai oleh admin)
 
+FIREBASE = https://e-commerce-cms-66bdc.web.app/
+HEROKU = https://e-commerce-cms-gacor.herokuapp.com/
+
 ## RESTful endpoints
 List of available endpoint:
 
