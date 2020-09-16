@@ -2,6 +2,10 @@
 Membuat website untuk management content ecommerce ( dipakai oleh admin)
 
 FIREBASE = https://e-commerce-cms-66bdc.web.app/
+
+email: admin@email.com
+password: 1234
+
 HEROKU = https://e-commerce-cms-gacor.herokuapp.com/
 
 ## RESTful endpoints
